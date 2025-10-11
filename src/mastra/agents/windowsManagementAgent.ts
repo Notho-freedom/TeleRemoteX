@@ -1,4 +1,4 @@
-import { groq } from "@ai-sdk/groq";
+import { createGroq } from "@ai-sdk/groq";
 import { Agent } from "@mastra/core/agent";
 import { Memory } from "@mastra/memory";
 import { sharedPostgresStorage } from "../storage";
@@ -6,6 +6,11 @@ import { systemMonitorTool } from "../tools/systemMonitorTool";
 import { commandExecutionTool } from "../tools/commandExecutionTool";
 import { fileOperationsTool } from "../tools/fileOperationsTool";
 import { applicationControlTool } from "../tools/applicationControlTool";
+
+// Configure Groq with API key
+const groq = createGroq({
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 export const windowsManagementAgent = new Agent({
   name: "Windows Management Agent",
