@@ -9,8 +9,15 @@ import { z } from "zod";
 
 import { sharedPostgresStorage } from "./storage";
 import { inngest, inngestServe } from "./inngest";
-import { exampleWorkflow } from "./workflows/exampleWorflow";
-import { exampleAgent } from "./agents/exampleAgent";
+import { windowsManagementWorkflow } from "./workflows/windowsManagementWorkflow";
+import { windowsManagementAgent } from "./agents/windowsManagementAgent";
+import { registerTelegramTrigger } from "../triggers/telegramTriggers";
+import { systemMonitorTool } from "./tools/systemMonitorTool";
+import { commandExecutionTool } from "./tools/commandExecutionTool";
+import { fileOperationsTool } from "./tools/fileOperationsTool";
+import { applicationControlTool } from "./tools/applicationControlTool";
+import { telegramMessagingTool } from "./tools/telegramMessagingTool";
+import { format } from "node:util";
 
 class ProductionPinoLogger extends MastraLogger {
   protected logger: pino.Logger;
@@ -56,14 +63,20 @@ class ProductionPinoLogger extends MastraLogger {
 export const mastra = new Mastra({
   storage: sharedPostgresStorage,
   // Register your workflows here
-  workflows: {},
+  workflows: { windowsManagementWorkflow },
   // Register your agents here
-  agents: {},
+  agents: { windowsManagementAgent },
   mcpServers: {
     allTools: new MCPServer({
       name: "allTools",
       version: "1.0.0",
-      tools: {},
+      tools: {
+        systemMonitorTool,
+        commandExecutionTool,
+        fileOperationsTool,
+        applicationControlTool,
+        telegramMessagingTool,
+      },
     }),
   },
   bundler: {
@@ -126,6 +139,22 @@ export const mastra = new Mastra({
         // 3. Establishing a publish-subscribe system for real-time monitoring
         //    through the workflow:${workflowId}:${runId} channel
       },
+      // Register Telegram trigger
+      ...registerTelegramTrigger({
+        triggerType: "telegram/message",
+        handler: async (mastra: Mastra, triggerInfo: any) => {
+          const logger = mastra.getLogger();
+          logger?.info("📝 [Telegram Trigger] Received message", { triggerInfo });
+
+          const run = await mastra.getWorkflow("windowsManagementWorkflow").createRunAsync();
+          await run.start({
+            inputData: {
+              message: JSON.stringify(triggerInfo.payload),
+              threadId: `telegram/${triggerInfo.payload.message?.chat?.id || 'unknown'}`,
+            }
+          });
+        },
+      }),
     ],
   },
   logger:
