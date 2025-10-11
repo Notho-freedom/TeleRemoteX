@@ -119,9 +119,15 @@ export function inngestServe({
   }
   let serveHost: string | undefined = undefined;
   if (process.env.NODE_ENV === "production") {
+    // Use REPLIT_DOMAINS for Replit deployments
     if (process.env.REPLIT_DOMAINS) {
       serveHost = `https://${process.env.REPLIT_DOMAINS.split(",")[0]}`;
     }
+    // Fall back to INNGEST_SERVE_HOST if explicitly set
+    else if (process.env.INNGEST_SERVE_HOST) {
+      serveHost = process.env.INNGEST_SERVE_HOST;
+    }
+    // Otherwise let Inngest auto-detect
   } else {
     serveHost = "http://localhost:5000";
   }
