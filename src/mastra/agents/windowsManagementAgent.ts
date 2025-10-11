@@ -1,4 +1,4 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { groq } from "@ai-sdk/groq";
 import { Agent } from "@mastra/core/agent";
 import { Memory } from "@mastra/memory";
 import { sharedPostgresStorage } from "../storage";
@@ -6,12 +6,6 @@ import { systemMonitorTool } from "../tools/systemMonitorTool";
 import { commandExecutionTool } from "../tools/commandExecutionTool";
 import { fileOperationsTool } from "../tools/fileOperationsTool";
 import { applicationControlTool } from "../tools/applicationControlTool";
-
-// Configure Groq using OpenAI-compatible API
-const groq = createOpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
-});
 
 export const windowsManagementAgent = new Agent({
   name: "Windows Management Agent",
@@ -45,7 +39,7 @@ Security reminders:
 
 Respond in French if the user writes in French, otherwise use English.`,
 
-  model: groq.responses("llama-3.3-70b-versatile"),
+  model: groq("llama-3.3-70b-versatile"),
   
   tools: {
     systemMonitorTool,
