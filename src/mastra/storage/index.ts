@@ -1,3 +1,14 @@
+/**
+ * PostgreSQL Storage Configuration
+ * 
+ * Configures the shared PostgreSQL storage instance for Mastra.
+ * Uses DATABASE_URL environment variable with fallback for development.
+ * 
+ * Environment Variables:
+ * - DATABASE_URL: PostgreSQL connection string (required in production)
+ * 
+ * Example: postgresql://user:password@host:port/database
+ */
 import { PostgresStore } from "@mastra/pg";
 
 // Get database URL from environment or use a default for development

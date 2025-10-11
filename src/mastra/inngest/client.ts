@@ -1,3 +1,16 @@
+/**
+ * Inngest Client Configuration
+ * 
+ * Configures the Inngest client with dynamic settings based on environment.
+ * 
+ * Production Environment Variables:
+ * - INNGEST_APP_ID: Application identifier (default: "replit-agent-workflow")
+ * - INNGEST_APP_NAME: Display name (default: "Replit Agent Workflow System")
+ * - INNGEST_EVENT_KEY: Event key for secure event sending (optional)
+ * - INNGEST_SIGNING_KEY: Signing key for webhook verification (optional)
+ * 
+ * Development uses realtime middleware and connects to local Inngest server.
+ */
 import { Inngest } from "inngest";
 import { realtimeMiddleware } from "@inngest/realtime";
 

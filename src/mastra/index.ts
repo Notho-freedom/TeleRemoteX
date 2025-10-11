@@ -1,3 +1,18 @@
+/**
+ * TeleRemoteX - Main Mastra Configuration
+ * 
+ * This file configures the Mastra framework for the TeleRemoteX application.
+ * All production configuration is dynamically loaded from environment variables.
+ * 
+ * Environment Variables:
+ * - DATABASE_URL: PostgreSQL connection string (required in production)
+ * - TELEGRAM_BOT_TOKEN: Telegram bot token (required)
+ * - GROQ_API_KEY/OPENAI_API_KEY: AI provider credentials (required)
+ * - NODE_ENV: Set to 'production' for production deployment
+ * - INNGEST_*: See inngest/client.ts for Inngest configuration options
+ * 
+ * See .env.example and DEPLOYMENT.md for full documentation.
+ */
 import { Mastra } from "@mastra/core";
 import { MastraError } from "@mastra/core/error";
 import { PinoLogger } from "@mastra/loggers";

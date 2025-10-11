@@ -47,14 +47,27 @@ The application is configured to use environment variables for all production se
 
 ### 1. Configure Environment Variables in Replit
 
-Go to your Repl settings (Tools → Secrets) and add:
+In your Replit workspace:
 
+1. Click on the "Tools" menu (🔧) in the left sidebar
+2. Select "Secrets" (or use the lock icon 🔒)
+3. Add the following secrets:
+
+**Required Secrets:**
 ```
-DATABASE_URL=<your-postgres-connection-string>
-TELEGRAM_BOT_TOKEN=<your-telegram-bot-token>
-GROQ_API_KEY=<your-groq-api-key>
-NODE_ENV=production
+DATABASE_URL = <your-postgres-connection-string>
+TELEGRAM_BOT_TOKEN = <your-telegram-bot-token>
+GROQ_API_KEY = <your-groq-api-key>
+NODE_ENV = production
 ```
+
+**Optional Secrets (for Inngest Cloud):**
+```
+INNGEST_EVENT_KEY = <your-inngest-event-key>
+INNGEST_SIGNING_KEY = <your-inngest-signing-key>
+```
+
+> **Note:** In Replit, environment variables set in Secrets are automatically available as `process.env` variables in your application.
 
 ### 2. Attach a PostgreSQL Database (if not already done)
 
